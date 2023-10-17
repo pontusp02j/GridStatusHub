@@ -1,4 +1,4 @@
-namespace GridStatusHub.Domain.Context.BaseRepo {
+namespace GridStatusHub.Domain.Context {
     public interface IBaseRepo<T>
     {
         Task<IEnumerable<T>> GetAllAsync();

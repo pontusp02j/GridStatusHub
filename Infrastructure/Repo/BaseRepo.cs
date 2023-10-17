@@ -1,15 +1,13 @@
 using System.Data;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Dapper.Contrib.Extensions;
-using GridStatusHub.Domain.Context.BaseRepo;
+using GridStatusHub.Domain.Context;
 using Microsoft.Extensions.Logging;
 
 namespace GridStatusHub.Infra.Repo {
     public class BaseRepo<T> : IBaseRepo<T> where T : class
     {
         protected readonly IDbConnection _connection;
-        private readonly ILogger<BaseRepo<T>> _logger;
+        protected readonly ILogger<BaseRepo<T>> _logger;
 
         public BaseRepo(IDbConnection connection, ILogger<BaseRepo<T>> logger)
         {

@@ -1,12 +1,15 @@
 using System.Data;
 using FastEndpoints;
-using GridStatusHub.Domain.Context.BaseRepo;
+using GridStatusHub.Domain.Context;
+using GridStatusHub.Domain.Entities;
 using GridStatusHub.Infra.Repo;
 using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddTransient<IDbConnection>(db => new NpgsqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped(typeof(IBaseRepo<>), typeof(BaseRepo<>));
+builder.Services.AddScoped<IGridSystemRepo<GridSystem>, GridSystemRepo>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllers();
@@ -34,8 +37,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseFastEndpoints();
 app.UseHttpsRedirection();
+app.UseFastEndpoints();
+app.UseCors();
 
 app.UseAuthorization();
 
