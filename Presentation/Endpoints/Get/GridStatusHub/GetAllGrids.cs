@@ -21,8 +21,22 @@ namespace GridStatusHub.Presentation.Endpoints {
 
         public override async Task HandleAsync(GridSystemRequest r, CancellationToken c)
         {
-            var gridSystems = await _queryHandler.HandleAsync();
-            await SendAsync(gridSystems.ToList());
+            var gridSystems = await _queryHandler.HandleAsync() ?? Enumerable.Empty<GridSystemResponse>();
+            var gridSystemList = gridSystems.ToList();
+
+            if (gridSystemList.Count == 0)
+            {
+                var notFoundResponse = new GridSystemResponse 
+                {
+                    // Assuming you have a Message or similar property on GridSystemResponse
+                    Message = "No grid systems found." 
+                };
+                await SendAsync(new List<GridSystemResponse> { notFoundResponse });
+            }
+            else
+            {
+                await SendAsync(gridSystemList);
+            }
         }
     }
 

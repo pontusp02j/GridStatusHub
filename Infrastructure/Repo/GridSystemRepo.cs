@@ -16,6 +16,18 @@ namespace GridStatusHub.Infra.Repo
             _gridCellRepo = gridCellRepo;
         }
 
+        public async Task<IEnumerable<GridSystem>> GetAllGridSystemsAndCellsAsync()
+        {
+            List<GridSystem> gridSystems = (await base.GetAllAsync()).ToList();
+
+            List<GridCell> allGridCells = (await _gridCellRepo.GetAllAsync()).ToList();
+
+            return gridSystems = gridSystems.Select(gridSystem => {
+                gridSystem.GridCells = allGridCells.Where(gc => gc.GridSystemId == gridSystem.Id).ToList();
+                return gridSystem;
+            }).ToList();
+        }
+
         public async Task<GridSystem> GetGridSystemWithCellsAsync(int id)
         {
             var gridSystem = await base.GetByIdAsync(id);

@@ -18,7 +18,7 @@ namespace GridStatusHub.Domain.HandlerRequests.Query
 
         public async Task<IEnumerable<GridSystemResponse>> HandleAsync()
         {
-            IEnumerable<GridSystem> gridSystems = await _reposGridSystem.GetAllAsync();
+            IEnumerable<GridSystem> gridSystems = await _reposGridSystem.GetAllGridSystemsAndCellsAsync();
 
             var gridSystemResponses = gridSystems.Select(gridSystem => new GridSystemResponse
             {

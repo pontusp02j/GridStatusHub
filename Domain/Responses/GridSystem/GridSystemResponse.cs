@@ -8,5 +8,6 @@ namespace GridStatusHub.Domain.Responses.GridSystem
         public string? Name { get; set; } 
         public DateTime? EstablishmentDate { get; set; } 
         public ICollection<GridCellResponse>? GridCells { get; set; }
+        public string? Message {get; set;}
     }
 }

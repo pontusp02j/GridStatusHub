@@ -15,8 +15,7 @@ builder.Services.AddScoped<IGetAllGridSystemsQueryHandler, GetAllGridSystemsQuer
 
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddFastEndpoints();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -43,9 +42,5 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseFastEndpoints();
 app.UseCors();
-
-app.UseAuthorization();
-
-app.MapControllers();
 
 app.Run();
