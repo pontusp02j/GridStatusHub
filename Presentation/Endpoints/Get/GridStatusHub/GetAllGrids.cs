@@ -28,7 +28,6 @@ namespace GridStatusHub.Presentation.Endpoints {
             {
                 var notFoundResponse = new GridSystemResponse 
                 {
-                    // Assuming you have a Message or similar property on GridSystemResponse
                     Message = "No grid systems found." 
                 };
                 await SendAsync(new List<GridSystemResponse> { notFoundResponse });

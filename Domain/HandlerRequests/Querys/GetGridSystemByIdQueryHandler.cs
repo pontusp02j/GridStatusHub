@@ -17,7 +17,6 @@ namespace GridStatusHub.Domain.HandlerRequests.Query
         public async Task<GridSystemResponse> HandleAsync(int id)
         {
             var gridSystem = await _reposGridSystem.GetGridSystemWithCellsAsync(id);
-            if(gridSystem == null) return null;
 
             var gridSystemResponse = new GridSystemResponse
             {

@@ -9,6 +9,6 @@ namespace GridStatusHub.Domain.Entities
         public int RowPosition { get; set; }
         public int ColumnPosition { get; set; }
 
-        public string? ColorStatus { get; set; }
+        public string ColorStatus { get; set; } = "gray";
     }
 }

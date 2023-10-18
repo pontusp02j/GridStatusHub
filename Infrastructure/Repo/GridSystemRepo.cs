@@ -1,4 +1,5 @@
 using System.Data;
+using Dapper;
 using GridStatusHub.Domain.Context;
 using GridStatusHub.Domain.Entities;
 using Microsoft.Extensions.Logging;
@@ -14,6 +15,14 @@ namespace GridStatusHub.Infra.Repo
             : base(connection, logger)
         {
             _gridCellRepo = gridCellRepo;
+        }
+
+        public async Task<GridSystem> GetGridSystemByNameAsync(string name)
+        {
+            var parameters = new { Name = name };
+            const string query = "SELECT * FROM GridSystem WHERE Name = @Name";
+
+            return await _connection.QuerySingleOrDefaultAsync<GridSystem>(query, parameters);
         }
 
         public async Task<IEnumerable<GridSystem>> GetAllGridSystemsAndCellsAsync()

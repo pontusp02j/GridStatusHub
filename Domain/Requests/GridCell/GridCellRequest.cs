@@ -6,7 +6,7 @@ namespace GridStatusHub.Domain.Requests.GridCell
         public int GridSystemId { get; set; }  
         public int RowPosition { get; set; } 
         public int ColumnPosition { get; set; } 
-        public string? ColorStatus { get; set; }
+        public string ColorStatus { get; set; } = "gray";
     }
 
 }

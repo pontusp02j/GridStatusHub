@@ -41,7 +41,7 @@ namespace GridStatusHub.Infra.Repo {
             }
         }
 
-        public async Task<int> InsertAsync(T entity)
+        public async Task<int> InsertAsync<TEntity>(TEntity entity) where TEntity : class
         {
             try
             {
@@ -49,7 +49,7 @@ namespace GridStatusHub.Infra.Repo {
             }
             catch(Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while inserting an entity of type {EntityType}.", typeof(T).Name);
+                _logger.LogError(ex, "An error occurred while inserting an entity of type {EntityType}.", typeof(TEntity).Name);
                 throw;
             }
         }

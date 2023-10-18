@@ -3,5 +3,6 @@ namespace GridStatusHub.Domain.Context {
     {
         Task<IEnumerable<GridSystem>> GetAllGridSystemsAndCellsAsync();
         Task<GridSystem> GetGridSystemWithCellsAsync(int id);
+        Task<GridSystem> GetGridSystemByNameAsync(string name);
     }
 }
