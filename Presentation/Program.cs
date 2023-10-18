@@ -2,16 +2,19 @@ using System.Data;
 using FastEndpoints;
 using GridStatusHub.Domain.Context;
 using GridStatusHub.Domain.Entities;
+using GridStatusHub.Domain.HandlerRequests.Query;
 using GridStatusHub.Infra.Repo;
-using Npgsql;
+using Npgsql;                
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddTransient<IDbConnection>(db => new NpgsqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped(typeof(IBaseRepo<>), typeof(BaseRepo<>));
 builder.Services.AddScoped<IGridSystemRepo<GridSystem>, GridSystemRepo>();
-builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IGetAllGridSystemsQueryHandler, GetAllGridSystemsQueryHandler>();
 
+
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
