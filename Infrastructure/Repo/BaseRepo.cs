@@ -3,6 +3,7 @@ using Dapper.Contrib.Extensions;
 using GridStatusHub.Domain.Context;
 using Microsoft.Extensions.Logging;
 
+
 namespace GridStatusHub.Infra.Repo {
     public class BaseRepo<T> : IBaseRepo<T> where T : class
     {
