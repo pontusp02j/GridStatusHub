@@ -20,16 +20,16 @@ namespace GridStatusHub.Domain.HandlerRequests.Query
 
             var gridSystemResponse = new GridSystemResponse
             {
-                Id = gridSystem.Id,
-                Name = gridSystem.Name,
-                EstablishmentDate = gridSystem.EstablishmentDate,
+                Id = gridSystem.id,
+                Name = gridSystem.name,
+                EstablishmentDate = gridSystem.establishmentdate,
                 GridCells = gridSystem.GridCells?.Select(gridCell => new GridCellResponse
                 {
-                    Id = gridCell.Id,
-                    GridSystemId = gridCell.GridSystemId,
-                    RowPosition = gridCell.RowPosition,
-                    ColumnPosition = gridCell.ColumnPosition,
-                    ColorStatus = gridCell.ColorStatus
+                    Id = gridCell.id,
+                    GridSystemId = gridCell.gridsystemid,
+                    RowPosition = gridCell.rowposition,
+                    ColumnPosition = gridCell.columnposition,
+                    ColorStatus = gridCell.colorstatus
                 }).ToList()
             };
 

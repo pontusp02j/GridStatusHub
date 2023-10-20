@@ -31,25 +31,19 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(
-        policy =>
+    options.AddPolicy("DevelopmentCORS", policy =>
         {
-            policy.WithOrigins("https://localhost:44420")
+            policy.WithOrigins("http://localhost:3000")
             .AllowAnyHeader()
-            .WithMethods("GET", "POST", "PUT");
+            .WithMethods("GET", "POST", "PUT", "DELETE");
         });
 });
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseCors("DevelopmentCORS");
 
 app.UseHttpsRedirection();
 app.UseFastEndpoints();
-app.UseCors();
 
 app.Run();

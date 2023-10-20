@@ -17,7 +17,7 @@ namespace GridStatusHub.Presentation.Endpoints
 
         public override void Configure()
         {
-            Post("/gridsystem");
+            Post("/gridsystem/create");
             AllowAnonymous();
         }
 

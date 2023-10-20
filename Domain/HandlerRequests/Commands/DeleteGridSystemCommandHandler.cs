@@ -14,7 +14,7 @@ namespace GridStatusHub.Domain.HandlerRequests.Command
 
         public async Task<bool> HandleAsync(int id)
         {
-            return await _reposGridSystem.DeleteAsync(id);                
+            return await _reposGridSystem.SoftDeleteGridSystemByIdAsync(id);                
         }
     }
 }

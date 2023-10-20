@@ -55,7 +55,7 @@ namespace GridStatusHub.Infra.Repo {
             }
         }
 
-        public async Task<bool> UpdateAsync(T entity)
+        public async Task<bool> UpdateAsync<TEntity>(TEntity entity) where TEntity : class
         {
             try
             {

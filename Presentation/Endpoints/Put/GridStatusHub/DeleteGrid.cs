@@ -1,9 +1,11 @@
 using FastEndpoints;
 using GridStatusHub.Domain.Context;
+using GridStatusHub.Domain.Requests.GridSystem;
+using GridStatusHub.Domain.Responses.GridSystem;
 
 namespace GridStatusHub.Presentation.Endpoints 
 {
-    public class DeleteGridSystemEndpoint : Endpoint<int, bool>
+    public class DeleteGridSystemEndpoint : Endpoint<GridSystemRequest, GridSystemResponse>
     {
         private readonly IDeleteGridSystemCommandHandler _deleteHandler;
 
@@ -14,17 +16,17 @@ namespace GridStatusHub.Presentation.Endpoints
 
         public override void Configure()
         {
-            Delete("/gridsystem/Delete/{id}");
+            Delete("/gridsystem/delete/{id}");
             AllowAnonymous();
         }
 
-        public override async Task HandleAsync(int id, CancellationToken c)
+        public override async Task HandleAsync(GridSystemRequest request, CancellationToken c)
         {
-            bool result = await _deleteHandler.HandleAsync(id);
+            bool result = await _deleteHandler.HandleAsync(request.Id);
             
             await (result 
-            ? SendAsync(true, StatusCodes.Status200OK) 
-            : SendAsync(false, StatusCodes.Status404NotFound));
+            ? SendOkAsync() 
+            : SendErrorsAsync(StatusCodes.Status400BadRequest));
         }
     }
 }

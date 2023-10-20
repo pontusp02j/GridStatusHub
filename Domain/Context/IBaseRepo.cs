@@ -4,7 +4,7 @@ namespace GridStatusHub.Domain.Context {
         Task<IEnumerable<T>> GetAllAsync();
         Task<T> GetByIdAsync(int id);
         Task<int> InsertAsync<TEntity>(TEntity entity) where TEntity : class;
-        Task<bool> UpdateAsync(T entity);
+        Task<bool> UpdateAsync<TEntity>(TEntity entity) where TEntity : class;
         Task<bool> DeleteAsync(int id);
     }
 }

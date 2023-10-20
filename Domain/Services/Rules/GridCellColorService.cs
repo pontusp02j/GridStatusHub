@@ -6,7 +6,8 @@ namespace GridStatusHub.Domain.Service.Rules
         {
             { "gray", "green" },
             { "green", "orange" },
-            { "orange", "red" }
+            { "orange", "red" },
+            { "red", "gray" }
         };
 
         public string GetNextStatus(string currentStatus)

@@ -22,7 +22,7 @@ namespace GridStatusHub.Domain.Utilities
             }
 
             // If checking during an update operation, the name can be the same for the current item
-            if (currentId.HasValue && existingGridSystemWithName.Id == currentId.Value) 
+            if (currentId.HasValue && existingGridSystemWithName.id == currentId.Value) 
             {
                 return true;
             }

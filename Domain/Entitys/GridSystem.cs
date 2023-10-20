@@ -2,11 +2,11 @@ namespace GridStatusHub.Domain.Entities
 {
     public class GridSystem
     {
-        public int Id { get; set; }
+        public int id { get; set; }
 
-        public string? Name { get; set; }
+        public string? name { get; set; }
 
-        public DateTime EstablishmentDate { get; set; }
+        public DateTime establishmentdate { get; set; }
         public ICollection<GridCell>? GridCells { get; set; }
     }
 }

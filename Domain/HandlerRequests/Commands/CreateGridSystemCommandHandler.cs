@@ -32,22 +32,21 @@ namespace GridStatusHub.Domain.HandlerRequests.Command
 
             var gridSystem = new GridSystem
             {
-                Name = request.Name,
-                EstablishmentDate = DateTime.Now
+                name = request.Name,
+                establishmentdate = DateTime.Now
             };
 
-            var gridSystemId = await _gridSystemRepo.InsertAsync(gridSystem);
+            List<GridCell> cells = GenerateGridCellsLayout();
 
-            List<GridCell> cells = GenerateGridCellsLayout(gridSystemId);
-            foreach(var cell in cells)
-            {
-                await _gridSystemRepo.InsertAsync(cell);
-            }
+            int id = await _gridSystemRepo.InsertGridAndCellsAsync(gridSystem, cells);
+            
+            response.Id = id;
+            response.Name = gridSystem.name;
 
             return response;
         }
 
-        private List<GridCell> GenerateGridCellsLayout(int gridSystemId)
+        private List<GridCell> GenerateGridCellsLayout()
         {
             var cells = new List<GridCell>();
             for (int row = 1; row <= 5; row++)
@@ -56,9 +55,8 @@ namespace GridStatusHub.Domain.HandlerRequests.Command
                 {
                     cells.Add(new GridCell
                     {
-                        GridSystemId = gridSystemId,
-                        RowPosition = row,
-                        ColumnPosition = col,
+                        rowposition = row,
+                        columnposition = col,
                     });
                 }
             }
