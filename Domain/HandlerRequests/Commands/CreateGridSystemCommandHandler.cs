@@ -10,13 +10,15 @@ namespace GridStatusHub.Domain.HandlerRequests.Command
     {
         private readonly IGridSystemRepo<GridSystem> _gridSystemRepo;
         private readonly GridSystemIntegrityService _integrityService;
+        private readonly ValidationUtility _validationUtility;
 
         public CreateGridSystemCommandHandler(IGridSystemRepo<GridSystem> gridSystemRepo,
-            GridSystemIntegrityService integrityService
+            GridSystemIntegrityService integrityService, ValidationUtility validationUtility
         )
         {
             _gridSystemRepo = gridSystemRepo;
             _integrityService = integrityService;
+            _validationUtility = validationUtility;
         }
 
         public async Task<GridSystemResponse> HandleAsync(GridSystemRequest request, CancellationToken cancellationToken)
@@ -24,9 +26,14 @@ namespace GridStatusHub.Domain.HandlerRequests.Command
             bool isNameUnique = await _integrityService.IsNameUnique(request.Name, request.Id);
             GridSystemResponse response = new GridSystemResponse();
             
+            var validationResults = _validationUtility.ValidateRequest(request);
+            if (validationResults.Any())
+            {
+                return response;
+            }
+
             if (!isNameUnique)
             {
-                response.Message = "The GridSystem name is not unique.";
                 return response;
             }
 

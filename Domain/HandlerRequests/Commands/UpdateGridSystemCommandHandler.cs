@@ -13,14 +13,16 @@ namespace GridStatusHub.Domain.HandlerRequests.Command
         private readonly IGridSystemRepo<GridSystem> _gridSystemRepo;
         private readonly GridCellColorService _colorService;
         private readonly GridSystemIntegrityService _integrityService;
+        private readonly ValidationUtility _validationUtility;
 
         public UpdateGridSystemCommandHandler(IGridSystemRepo<GridSystem> gridSystemRepo, GridCellColorService colorService,
-            GridSystemIntegrityService integrityService
+            GridSystemIntegrityService integrityService, ValidationUtility validationUtility
         )
         {
             _gridSystemRepo = gridSystemRepo;
             _colorService = colorService;
             _integrityService = integrityService;
+            _validationUtility = validationUtility;
         }
 
         public async Task<GridSystemResponse> HandleAsync(GridSystemRequest request, CancellationToken cancellationToken)
@@ -38,12 +40,19 @@ namespace GridStatusHub.Domain.HandlerRequests.Command
         private async Task<GridSystemResponse> UpdateGridSystemWithoutCells(GridSystemRequest gridSystemData)
         {
             GridSystemResponse response = new GridSystemResponse();
-
             // Check if the name is unique.
             bool isNameUnique = await _integrityService.IsNameUnique(gridSystemData.Name, gridSystemData.Id);
+            
+            var validationResults = _validationUtility.ValidateRequest(gridSystemData);
+            if (validationResults.Any())
+            {
+                response.Message = "Valideringen gick inte igenom";
+                return response;
+            }
+            
             if (!isNameUnique)
             {
-                response.Message = "The GridSystem name is not unique.";
+                response.Message = "Rutnäts namnet finns redan.";
                 return response;
             }
 

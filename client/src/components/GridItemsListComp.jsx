@@ -9,6 +9,7 @@ import {
   TableRow,
   Paper,
   IconButton,
+  TextField
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -95,10 +96,18 @@ const GridItemsListComp = () => {
   
             <TableCell component="th" scope="row">
               {editingGridId === grid.id ? (
-                <input 
-                  value={editedName} 
-                  onChange={(e) => setEditedName(e.target.value)}
-                />
+                <TextField
+                autoFocus
+                margin="dense"
+                label="Namn"
+                fullWidth
+                value={editedName}
+                onChange={(e) => setEditedName(e.target.value)}
+                inputProps={{
+                  maxLength: 15,
+                  pattern: "^[a-zA-Z0-9]*$"
+                }}
+              />
               ) : (
                 grid.name
               )}

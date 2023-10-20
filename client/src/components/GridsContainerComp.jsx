@@ -37,7 +37,7 @@ const GridContainerComp = () => {
       <GridControlsComp onCreateNew={handleCreateNew} />
       
       <Dialog open={isDialogOpen} onClose={handleDialogClose}>
-        <DialogTitle>Create New Grid</DialogTitle>
+        <DialogTitle>Skapa nytt rutnät</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -46,6 +46,10 @@ const GridContainerComp = () => {
             fullWidth
             value={gridName}
             onChange={(e) => setGridName(e.target.value)}
+            inputProps={{
+              maxLength: 15,
+              pattern: "^[a-zA-Z0-9]*$"
+            }}
           />
         </DialogContent>
         <DialogActions>
