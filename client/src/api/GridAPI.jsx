@@ -50,19 +50,26 @@ class GridAPI {
           body: JSON.stringify(grid),
         });
     
-        if (response.ok) {
-          return await response.json();
-        } else if (response.status === 400) {
+        if (response.ok) 
+        { 
+          return await this.handleResponse(response);
+        } 
+
+        else if (response.status === 400) 
+        {
           const errorData = await response.json();
 
-          if (errorData.message) {
+          if (errorData.message) 
+          {
             window.alert(sErrorMessage);
           } else {
             window.alert("Bad request.");
           }
           
           return null;
-        } else {
+        } 
+        else 
+        {
           window.alert("An error occurred while creating the grid.");
           return null;
         }

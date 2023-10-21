@@ -8,6 +8,12 @@ export class GridProvider extends Component {
   state = {
     grids: [],
     currentGrid: null,
+    activeGridId: null,
+    
+  };
+
+  setActiveGridId = (gridId) => {
+    this.setState({ activeGridId: gridId });
   };
 
   handleSetCurrentGrid = (grid) => {
@@ -41,8 +47,11 @@ export class GridProvider extends Component {
     }
 
     const newGrid = await GridAPI.createGrid(sValidMessage, grid);
-    if (newGrid && newGrid.name) { 
+    if (newGrid && newGrid.name) 
+    { 
       await this.loadGrids();
+      this.setActiveGridId(newGrid.id);
+      return newGrid;
     }
   };
 
@@ -82,7 +91,8 @@ export class GridProvider extends Component {
       updateGrid: this.handleUpdateGrid,
       deleteGrid: this.handleDeleteGrid,
       setCurrentGrid: this.handleSetCurrentGrid,
-      fetchGridData: this.fetchGridData
+      fetchGridData: this.fetchGridData,
+      setActiveGridId: this.setActiveGridId
     };
 
     return (
