@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import GridContext from './GridContext';
 import GridAPI from '../api/GridAPI';
+import { validateGridName, sValidMessage } from './../utili/GridValidations';
+
 
 export class GridProvider extends Component {
   state = {
@@ -25,21 +27,34 @@ export class GridProvider extends Component {
     });
   }
   
-
   async fetchGridData(gridId) {
     const grid = await GridAPI.fetchGridById(gridId);
     return grid;
   }
   
   handleCreateGrid = async (grid) => {
-    const newGrid = await GridAPI.createGrid(grid);
+
+    const error = validateGridName(grid.name, this.state.grids);
+    if (error) {
+      window.alert(error);
+      return;
+    }
+
+    const newGrid = await GridAPI.createGrid(sValidMessage, grid);
     if (newGrid && newGrid.name) { 
       await this.loadGrids();
     }
   };
 
   handleUpdateGrid = async (gridId, updatedGrid) => {
-    const data = await GridAPI.updateGrid(updatedGrid);
+
+    const error = validateGridName(updatedGrid.name, this.state.grids);
+    if (error) {
+      window.alert(error);
+      return;
+    }
+
+    const data = await GridAPI.updateGrid(sValidMessage, updatedGrid);
     if (data) {
       this.setState(prevState => {
         const updatedGrids = prevState.grids.map(grid => (grid.id === gridId ? data : grid));

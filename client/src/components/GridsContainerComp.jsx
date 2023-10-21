@@ -12,7 +12,7 @@ import TextField from '@mui/material/TextField';
 
 
 const GridContainerComp = () => {
-  const { createGrid, currentGrid, fetchGridData } = useContext(GridContext);
+  const { createGrid, currentGrid } = useContext(GridContext);
   
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [gridName, setGridName] = useState('');
@@ -42,13 +42,14 @@ const GridContainerComp = () => {
           <TextField
             autoFocus
             margin="dense"
-            label="Grid Name"
+            label="Grid Namn"
             fullWidth
             value={gridName}
             onChange={(e) => setGridName(e.target.value)}
             inputProps={{
               maxLength: 15,
-              pattern: "^[a-zA-Z0-9]*$"
+              pattern: "^[a-zA-Z0-9]*$",
+              required: true
             }}
           />
         </DialogContent>

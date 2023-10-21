@@ -40,7 +40,7 @@ class GridAPI {
       }
     }
 
-    static async createGrid(grid) {
+    static async createGrid(sErrorMessage, grid) {
       try {
         const response = await fetch(`${BASE_URL}/gridsystem/create`, {
           method: 'POST',
@@ -56,7 +56,7 @@ class GridAPI {
           const errorData = await response.json();
 
           if (errorData.message) {
-            window.alert("Du får enbart lägga in bokstäver och siffror och samma namn på rutnätetna får inte existera");
+            window.alert(sErrorMessage);
           } else {
             window.alert("Bad request.");
           }
@@ -73,7 +73,7 @@ class GridAPI {
     }
     
 
-    static async updateGrid(gridSystemRequest) {
+    static async updateGrid(sErrorMessage, gridSystemRequest) {
       try {
           const response = await fetch(`${BASE_URL}/gridsystem/Update`, {
             method: 'PUT',
@@ -90,7 +90,7 @@ class GridAPI {
           return await this.handleResponse(response);
 
       } catch (error) {
-        window.alert("Du får enbart lägga in bokstäver och siffror och samma namn på rutnätetna får inte existera: " + error);
+        window.alert(sErrorMessage + " " + error);
         return null;
       }
   }
