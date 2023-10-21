@@ -120,12 +120,16 @@ const GridItemsListComp = () => {
                 </IconButton>
               ) : (
                 <>
-                  <IconButton aria-label="edit" onClick={(e) => { e.stopPropagation(); handleEdit(grid.id, grid.name); }}>
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton aria-label="delete" onClick={(e) => { e.stopPropagation(); handleDelete(grid.id); }}>
-                    <DeleteIcon />
-                  </IconButton>
+                  {editingGridId === null && (
+                    <>
+                      <IconButton aria-label="edit" onClick={(e) => { e.stopPropagation(); handleEdit(grid.id, grid.name); }}>
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton aria-label="delete" onClick={(e) => { e.stopPropagation(); handleDelete(grid.id); }}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </>
+                  )}
                 </>
               )}
             </TableCell>

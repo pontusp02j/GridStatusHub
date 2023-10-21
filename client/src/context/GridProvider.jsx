@@ -27,7 +27,7 @@ export class GridProvider extends Component {
   
 
   async fetchGridData(gridId) {
-    const grid = await GridAPI.fetchGridById(gridId);  // Assuming GridAPI has this method.
+    const grid = await GridAPI.fetchGridById(gridId);
     return grid;
   }
   
@@ -39,7 +39,7 @@ export class GridProvider extends Component {
   };
 
   handleUpdateGrid = async (gridId, updatedGrid) => {
-    const data = await GridAPI.updateGrid(gridId, updatedGrid);
+    const data = await GridAPI.updateGrid(updatedGrid);
     if (data) {
       this.setState(prevState => {
         const updatedGrids = prevState.grids.map(grid => (grid.id === gridId ? data : grid));
@@ -51,7 +51,6 @@ export class GridProvider extends Component {
       });      
     }
   };
-  
   
   handleDeleteGrid = async gridId => {
     await GridAPI.deleteGrid(gridId);

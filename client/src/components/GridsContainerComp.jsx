@@ -54,10 +54,10 @@ const GridContainerComp = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialogClose} color="primary">
-            Cancel
+            Avbryt
           </Button>
           <Button onClick={handleDialogSubmit} color="primary">
-            Submit
+            Spara
           </Button>
         </DialogActions>
       </Dialog>

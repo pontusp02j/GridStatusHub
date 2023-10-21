@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     transition: 'transform 0.3s ease, box-shadow 0.3s ease',
     cursor: 'pointer',
     '&:hover': {
-      transform: 'scale(1.05)', // Slight scale on hover for interaction
+      transform: 'scale(1.05)',
       boxShadow: '0px 8px 20px rgba(0, 0, 0, 0.3)',
     }
 
@@ -56,10 +56,6 @@ const useStyles = makeStyles((theme) => ({
 const ColorsGridComp = ({ gridData }) => {
   const classes = useStyles();
   const { updateGrid, setCurrentGrid, fetchGridData } = useContext(GridContext);
-
-  useEffect(() => {
-    //console.log("gridData changed:", gridData);
-  }, [gridData]);
 
   const handleColorBlockClick = async (cellId) => {
     const gridSystemRequest = {

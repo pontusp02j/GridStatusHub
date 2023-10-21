@@ -40,7 +40,6 @@ namespace GridStatusHub.Domain.HandlerRequests.Command
         private async Task<GridSystemResponse> UpdateGridSystemWithoutCells(GridSystemRequest gridSystemData)
         {
             GridSystemResponse response = new GridSystemResponse();
-            // Check if the name is unique.
             bool isNameUnique = await _integrityService.IsNameUnique(gridSystemData.Name, gridSystemData.Id);
             
             var validationResults = _validationUtility.ValidateRequest(gridSystemData);
@@ -51,17 +50,14 @@ namespace GridStatusHub.Domain.HandlerRequests.Command
                 return response;
             }
 
-            // Get the GridSystem entity to be updated.
             var gridSystemToUpdate = await _gridSystemRepo.GetByIdAsync(gridSystemData.Id);
             if (gridSystemToUpdate != null)
             {
-                // Update entity properties directly from request data.
                 gridSystemToUpdate.name = gridSystemData.Name;
                 gridSystemToUpdate.establishmentdate = gridSystemData.EstablishmentDate ?? gridSystemToUpdate.establishmentdate;
 
                 await _gridSystemRepo.UpdateGridSystemNameAsync(gridSystemToUpdate.id, gridSystemToUpdate.name);
 
-                // Populate the response.
                 response.Id = gridSystemToUpdate.id;
                 response.Name = gridSystemToUpdate.name;
                 response.EstablishmentDate = gridSystemToUpdate.establishmentdate;

@@ -73,7 +73,7 @@ class GridAPI {
     }
     
 
-    static async updateGrid(gridId, gridSystemRequest) {
+    static async updateGrid(gridSystemRequest) {
       try {
           const response = await fetch(`${BASE_URL}/gridsystem/Update`, {
             method: 'PUT',
@@ -95,16 +95,16 @@ class GridAPI {
       }
   }
    
-    static async deleteGrid(gridId) {
-      try {
-        const response = await fetch(`${BASE_URL}/gridsystem/delete/${gridId}`, { method: 'DELETE' });
-        if (!response.ok) {
-            throw new Error(`Failed to delete grid. HTTP Status: ${response.status}`);
-        }
-      } catch (error) {
-        this.logError('delete grid', error);
+  static async deleteGrid(gridId) {
+    try {
+      const response = await fetch(`${BASE_URL}/gridsystem/delete/${gridId}`, { method: 'DELETE' });
+      if (!response.ok) {
+          throw new Error(`Failed to delete grid. HTTP Status: ${response.status}`);
       }
+    } catch (error) {
+      this.logError('delete grid', error);
     }
+  }
 }
 
 export default GridAPI;
