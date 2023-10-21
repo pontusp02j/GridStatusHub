@@ -17,13 +17,6 @@ BEGIN
         );
         
     END IF;
-    
-    -- Insert mock data into GridSystems only if it's empty
-    IF NOT EXISTS (SELECT 1 FROM GridSystems) THEN
-        INSERT INTO GridSystems (Name, EstablishmentDate)
-        VALUES ('Grid System 1', NOW()),
-               ('Grid System 2', NOW());
-    END IF;
 
 END $$;
 
@@ -42,27 +35,4 @@ BEGIN
         );
         
     END IF;
-
-    -- Insert mock data into GridCells associated with the first grid system only if it's empty
-    IF NOT EXISTS (SELECT 1 FROM GridCells WHERE GridSystemId = 1) THEN
-        INSERT INTO GridCells (GridSystemId, RowPosition, ColumnPosition, ColorStatus)
-        VALUES (1, 1, 1, 'gray'),
-               (1, 1, 2, 'green'),
-               (1, 1, 3, 'orange'),
-               (1, 2, 1, 'red'),
-               (1, 2, 2, 'gray'),
-               (1, 2, 3, 'green');
-    END IF;
-    
-    -- Insert mock data into GridCells associated with the second grid system only if it's empty
-    IF NOT EXISTS (SELECT 1 FROM GridCells WHERE GridSystemId = 2) THEN
-        INSERT INTO GridCells (GridSystemId, RowPosition, ColumnPosition, ColorStatus)
-        VALUES (2, 1, 1, 'green'),
-               (2, 1, 2, 'green'),
-               (2, 1, 3, 'orange'),
-               (2, 2, 1, 'red'),
-               (2, 2, 2, 'orange'),
-               (2, 2, 3, 'gray');
-    END IF;
-
 END $$;

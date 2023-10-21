@@ -18,7 +18,6 @@ export class GridProvider extends Component {
 
   async loadGrids() {
     let grids = await GridAPI.fetchGrids();
-    console.log(grids)
     grids = grids.filter(grid => grid.establishmentDate != null && grid.establishmentDate !== '0001-01-01T00:00:00');
     this.setState({
       grids,
