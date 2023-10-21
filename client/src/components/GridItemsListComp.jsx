@@ -29,7 +29,10 @@ const useStyles = makeStyles((theme) => ({
 
   tableRow: {
     cursor: 'pointer',
-    '&:hover': {
+    '&.editing': {
+      cursor: 'default',
+    },
+    '&:not(.editing):hover': {
       backgroundColor: theme.palette.action.hover,
     }
   },
@@ -58,11 +61,13 @@ const GridItemsListComp = () => {
   };
 
   const handleEdit = (gridId, gridName) => {
+    if (editingGridId) return;
     setEditingGridId(gridId);
     setEditedName(gridName);
   };
 
-  const handleSave = async (gridId) => {
+  const handleSave = async (e, gridId) => {
+    e.stopPropagation();
     if (editedName.trim()) {
       const { gridCells, ...gridWithoutCells } = currentGrid;
       await updateGrid(gridId, { ...gridWithoutCells, name: editedName });
@@ -70,7 +75,8 @@ const GridItemsListComp = () => {
       setEditingGridId(null);
       setEditedName("");
     }
-};
+  };
+  
 
   const handleDelete = (gridId) => {
     deleteGrid(gridId);
@@ -90,10 +96,10 @@ const GridItemsListComp = () => {
             && grid.establishmentDate != null && grid.establishmentDate !== '0001-01-01T00:00:00')
             .map((grid, index) => (
             <TableRow 
-            key={`${grid.id}-${index}`} 
-            onClick={() => handleRowClick(grid)}
-            className={`${classes.tableRow} ${grid.id === activeGridId ? classes.activeRow : ''}`}>
-  
+                key={`${grid.id}-${index}`} 
+                onClick={editingGridId ? null : () => handleRowClick(grid)}
+                className={`${classes.tableRow} ${grid.id === activeGridId ? classes.activeRow : ''} ${editingGridId === grid.id ? 'editing' : ''}`}>
+
             <TableCell component="th" scope="row">
               {editingGridId === grid.id ? (
                 <TextField
@@ -115,12 +121,12 @@ const GridItemsListComp = () => {
             
             <TableCell align="right">
               {editingGridId === grid.id ? (
-                <IconButton aria-label="save" onClick={() => handleSave(grid.id)}>
+                <IconButton aria-label="save" onClick={(e) => handleSave(e, grid.id)}>
                   <SaveIcon />
                 </IconButton>
               ) : (
                 <>
-                  {editingGridId === null && (
+                  {grid.id === activeGridId && editingGridId === null && (
                     <>
                       <IconButton aria-label="edit" onClick={(e) => { e.stopPropagation(); handleEdit(grid.id, grid.name); }}>
                         <EditIcon />
