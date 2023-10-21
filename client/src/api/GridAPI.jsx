@@ -56,7 +56,7 @@ class GridAPI {
           const errorData = await response.json();
 
           if (errorData.message) {
-            window.alert("You can't add names that already exist.");
+            window.alert("Du får enbart lägga in bokstäver och siffror och samma namn på rutnätetna får inte existera");
           } else {
             window.alert("Bad request.");
           }
@@ -82,16 +82,21 @@ class GridAPI {
             },
             body: JSON.stringify(gridSystemRequest),
           });
+
+          if(response.status == 202) {
+            return;
+          }
+
           return await this.handleResponse(response);
+
       } catch (error) {
-          this.logError('update grid', error);
-          return null;
+        window.alert("Du får enbart lägga in bokstäver och siffror och samma namn på rutnätetna får inte existera: " + error);
+        return null;
       }
   }
    
     static async deleteGrid(gridId) {
       try {
-        console.log(gridId)
         const response = await fetch(`${BASE_URL}/gridsystem/delete/${gridId}`, { method: 'DELETE' });
         if (!response.ok) {
             throw new Error(`Failed to delete grid. HTTP Status: ${response.status}`);

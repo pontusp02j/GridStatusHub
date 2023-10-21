@@ -84,13 +84,13 @@ const GridItemsListComp = () => {
             <TableCell>Namn</TableCell>
             <TableCell align="right">Ta Bort / Editera</TableCell>
           </TableRow>
-        </TableHead>
+        </TableHead> 
         <TableBody>
           {grids.filter(grid => grid.establishmentDate != null 
             && grid.establishmentDate != null && grid.establishmentDate !== '0001-01-01T00:00:00')
-            .map((grid) => (
+            .map((grid, index) => (
             <TableRow 
-            key={grid.id} 
+            key={`${grid.id}-${index}`} 
             onClick={() => handleRowClick(grid)}
             className={`${classes.tableRow} ${grid.id === activeGridId ? classes.activeRow : ''}`}>
   

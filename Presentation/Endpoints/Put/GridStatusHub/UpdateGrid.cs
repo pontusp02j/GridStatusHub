@@ -32,10 +32,10 @@ namespace GridStatusHub.Presentation.Endpoints
             {
                 GridSystemResponse errorResponse = new GridSystemResponse
                 {
-                    Message = "Grid system update failed or not found.",
+                    Message = "Grid system update failed",
                 };
 
-                await SendAsync(errorResponse, StatusCodes.Status404NotFound);
+                await SendAsync(errorResponse, StatusCodes.Status400BadRequest);
             }
         }
     }

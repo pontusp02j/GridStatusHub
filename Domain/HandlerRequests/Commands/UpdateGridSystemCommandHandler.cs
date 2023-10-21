@@ -44,15 +44,10 @@ namespace GridStatusHub.Domain.HandlerRequests.Command
             bool isNameUnique = await _integrityService.IsNameUnique(gridSystemData.Name, gridSystemData.Id);
             
             var validationResults = _validationUtility.ValidateRequest(gridSystemData);
-            if (validationResults.Any())
-            {
-                response.Message = "Valideringen gick inte igenom";
-                return response;
-            }
             
-            if (!isNameUnique)
+            if (validationResults.Any() || !isNameUnique)
             {
-                response.Message = "Rutnäts namnet finns redan.";
+                response.Message = "Error";
                 return response;
             }
 
