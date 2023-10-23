@@ -7,14 +7,30 @@ const GridProvider = ({ children }) => {
     const [grids, setGrids] = useState([]);
     const [currentGrid, setCurrentGrid] = useState(null);
     const [activeGridId, setActiveGridId] = useState(null);
+    const [isDataLoading, setIsDataLoading] = useState(true);
 
     const loadGrids = async () => {
-        const gridsData = (await GridAPI.fetchGrids())
-            .filter(grid => grid.establishmentDate && grid.establishmentDate !== '0001-01-01T00:00:00');
-        setGrids(gridsData);
-        
-        setCurrentGrid(gridsData.length ? currentGrid : null);
-    }    
+        try 
+        {
+            const gridsData = await GridAPI.fetchGrids();
+            
+            if (!gridsData) 
+            {
+                window.alert("Failed to load grids data.");
+                return;
+            }
+
+            const filteredGrids = gridsData.filter(grid => grid.establishmentDate && grid.establishmentDate !== '0001-01-01T00:00:00');
+            setGrids(filteredGrids);
+            setCurrentGrid(filteredGrids.length ? currentGrid : null);
+            setIsDataLoading(false);
+        } 
+        catch (error)
+        {
+            console.error("Failed to fetch grids:", error);
+            setIsDataLoading(false);        
+        }
+    }       
 
     useEffect(() => {
         loadGrids();
@@ -46,6 +62,7 @@ const GridProvider = ({ children }) => {
             grids,
             currentGrid,
             activeGridId,
+            isDataLoading,
             createGrid: grid => manageGrid(GridAPI.createGrid, grid),
             updateGrid: (gridId, updatedGrid) => manageGrid(GridAPI.updateGrid, updatedGrid, gridId),
             deleteGrid: async gridId => {

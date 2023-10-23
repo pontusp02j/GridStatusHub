@@ -17,7 +17,7 @@ const ColorsGridComp = ({ gridData }) => {
             };
             
             await updateGrid(gridSystemRequest.Id, gridSystemRequest);
-            await new Promise(resolve => setTimeout(resolve, 50));
+            await new Promise(resolve => setTimeout(resolve, 10));
             const updatedGridData = await fetchGridData(gridSystemRequest.Id);    
             setCurrentGrid(updatedGridData);
         

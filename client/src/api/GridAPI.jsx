@@ -32,6 +32,11 @@ class GridAPI {
 
     } catch (error) {
       console.error(`Error during ${options.method || 'GET'} request: ${error.message}`);
+      if (error.message.includes("Failed to fetch") || error.message.includes("ERR_CONNECTION_REFUSED")) {
+          window.alert("Network error: Failed to connect to the server. Please check your connection.");
+      } else {
+          window.alert("An unexpected error occurred. Please try again later.");
+      }
       return null;
     }
   }
