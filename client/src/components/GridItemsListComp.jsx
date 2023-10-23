@@ -24,8 +24,10 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(10),
         maxWidth: 650,
         margin: '0 auto',
+        border: '1px solid rgba(128, 128, 128, 0.3)'
     },
     tableRow: {
+        height: '100px',
         cursor: 'pointer',
         '&.editing': {
             cursor: 'default',
@@ -36,19 +38,19 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const GridItemsListComp = () => {
+const GridItemsListComp = ({ editingGridId, setEditingGridId, currentGridId  }) => {
     const classes = useStyles();
     const { grids, currentGrid, updateGrid, deleteGrid, setCurrentGrid, fetchGridData } = useContext(GridContext);
 
     const [activeGridId, setActiveGridId] = useState(null);
-    const [editingGridId, setEditingGridId] = useState(null);
     const [editedName, setEditedName] = useState("");
 
-    useEffect(() => {
-        if (grids.length > 0 && activeGridId === null) {
-            setActiveGridId(grids[0].id);
-        }
-    }, [grids, activeGridId]);
+    useEffect(() => 
+    {
+        ((grids.length > 0 && activeGridId === null)) ? 
+            setActiveGridId(grids[0].id) : setActiveGridId(currentGridId);
+
+    }, [grids, activeGridId, currentGridId]);
 
     const handleRowClick = async (grid) => {
         const latestGridData = await fetchGridData(grid.id);
@@ -58,6 +60,7 @@ const GridItemsListComp = () => {
 
     const handleEdit = (gridId, gridName) => {
         if (editingGridId) return;
+        
         setEditingGridId(gridId);
         setEditedName(gridName);
     };

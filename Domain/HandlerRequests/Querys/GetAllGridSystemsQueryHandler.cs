@@ -27,11 +27,11 @@ namespace GridStatusHub.Domain.HandlerRequests.Query
                 EstablishmentDate = gridSystem.establishmentdate,
                 GridCells = gridSystem.GridCells?.Select(gridCell => new GridCellResponse
                 {
-                    Id = gridCell.id,
-                    GridSystemId = gridCell.gridsystemid,
-                    RowPosition = gridCell.rowposition,
-                    ColumnPosition = gridCell.columnposition,
-                    ColorStatus = gridCell.colorstatus
+                    id = gridCell.id,
+                    gridsystemid = gridCell.gridsystemid,
+                    rowposition = gridCell.rowposition,
+                    columnposition = gridCell.columnposition,
+                    colorstatus = gridCell.colorstatus
                 }).ToList()
             }).ToList();
 

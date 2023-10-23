@@ -1,116 +1,76 @@
 const BASE_URL = 'https://localhost:7201';
+const GRID_ENDPOINT = '/gridsystems';
+const HEADERS_JSON = { 'Content-Type': 'application/json' };
 
 class GridAPI {
-    static async handleResponse(response) {
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        try {
-            return await response.json();
-        } catch (error) {
-            throw new Error('The response is not valid JSON.');
-        }
+  
+  static handleError(response, customMessage) {
+    if (response.status === 400 && customMessage) {
+      window.alert(customMessage);
+      return null;
     }
 
-    static logError(action, error) {
-        if (error.message === 'Failed to fetch') {
-            console.error(`Unable to ${action}. Please check your network connection or ensure the server is running.`);
-        } else {
-            console.error(`Error during ${action}:`, error.message);
-        }
-    }
-
-    static async fetchGrids() {
-      try {
-        const response = await fetch(`${BASE_URL}/gridsystems`);
-        return await this.handleResponse(response);
-      } catch (error) {
-        this.logError('fetch grids', error);
-        return [];
-      }
-    }
-    
-    static async fetchGridById(gridId) {
-      try {
-          const response = await fetch(`${BASE_URL}/gridsystems/${gridId}`);
-          return await this.handleResponse(response);
-      } catch (error) {
-          this.logError('fetch grid by ID', error);
-          return null;
-      }
-    }
-
-    static async createGrid(sErrorMessage, grid) {
-      try {
-        const response = await fetch(`${BASE_URL}/gridsystem/create`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(grid),
-        });
-    
-        if (response.ok) 
-        { 
-          return await this.handleResponse(response);
-        } 
-
-        else if (response.status === 400) 
-        {
-          const errorData = await response.json();
-
-          if (errorData.message) 
-          {
-            window.alert(sErrorMessage);
-          } else {
-            window.alert("Bad request.");
-          }
-          
-          return null;
-        } 
-        else 
-        {
-          window.alert("An error occurred while creating the grid.");
-          return null;
-        }
-      } catch (error) {
-        this.logError('create grid', error);
-        return null;
-      }
-    }
-    
-
-    static async updateGrid(sErrorMessage, gridSystemRequest) {
-      try {
-          const response = await fetch(`${BASE_URL}/gridsystem/Update`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(gridSystemRequest),
-          });
-
-          if(response.status == 202) {
-            return;
-          }
-
-          return await this.handleResponse(response);
-
-      } catch (error) {
-        window.alert(sErrorMessage + " " + error);
-        return null;
-      }
+    throw new Error(`HTTP error! Status: ${response.status}`);
   }
-   
-  static async deleteGrid(gridId) {
+
+  static async request(endpoint, options = {}, customErrorMessage) {
     try {
-      const response = await fetch(`${BASE_URL}/gridsystem/delete/${gridId}`, { method: 'DELETE' });
-      if (!response.ok) {
-          throw new Error(`Failed to delete grid. HTTP Status: ${response.status}`);
+      const response = await fetch(`${BASE_URL}${endpoint}`, options);
+
+      if (response.status === 202 || options.method === 'DELETE') {
+        if (!response.ok) {
+          return this.handleError(response, customErrorMessage);
+        }
+        return;
       }
+
+      if (response.ok) {
+        return await response.json();
+      } else {
+        return this.handleError(response, customErrorMessage);
+      }
+
     } catch (error) {
-      this.logError('delete grid', error);
+      console.error(`Error during ${options.method || 'GET'} request: ${error.message}`);
+      return null;
     }
+}
+
+
+  static fetchGrids() {
+    return this.request(GRID_ENDPOINT);
+  }
+
+  static fetchGridById(gridId) {
+    return this.request(`${GRID_ENDPOINT}/${gridId}`);
+  }
+
+  static createGrid(errorMessage, grid) {
+    return this.request(
+      `${GRID_ENDPOINT}/create`,
+      {
+        method: 'POST',
+        headers: HEADERS_JSON,
+        body: JSON.stringify(grid),
+      },
+      errorMessage
+    );
+  }
+
+  static updateGrid(errorMessage, gridSystemRequest) {
+    return this.request(
+      `${GRID_ENDPOINT}/Update`,
+      {
+        method: 'PUT',
+        headers: HEADERS_JSON,
+        body: JSON.stringify(gridSystemRequest),
+      },
+      errorMessage
+    );
+  }
+
+  static deleteGrid(gridId) {
+    return this.request(`${GRID_ENDPOINT}/delete/${gridId}`, { method: 'DELETE' });
   }
 }
 

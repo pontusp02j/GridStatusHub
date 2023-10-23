@@ -90,8 +90,8 @@ namespace GridStatusHub.Domain.HandlerRequests.Command
                             
                     var gridCellsResponseList = gridSystem.GridCells?.Select(cell => new GridCellResponse 
                     {
-                        Id = cell.id, 
-                        ColorStatus = cell.colorstatus
+                        id = cell.id, 
+                        colorstatus = cell.colorstatus
                     }).ToList();
 
                     response.Id = gridSystem.id;

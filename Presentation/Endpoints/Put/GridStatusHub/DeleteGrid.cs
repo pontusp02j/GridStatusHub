@@ -16,7 +16,7 @@ namespace GridStatusHub.Presentation.Endpoints
 
         public override void Configure()
         {
-            Delete("/gridsystem/delete/{id}");
+            Delete("/gridsystems/delete/{id}");
             AllowAnonymous();
         }
 

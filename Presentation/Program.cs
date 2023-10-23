@@ -24,6 +24,9 @@ builder.Services.AddScoped<ICreateGridSystemCommandHandler<GridSystemRequest, Gr
 builder.Services.AddScoped<GridCellColorService>();
 builder.Services.AddScoped<GridSystemIntegrityService>();
 builder.Services.AddScoped<ValidationUtility>();
+
+
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddFastEndpoints();
 builder.Services.AddEndpointsApiExplorer();

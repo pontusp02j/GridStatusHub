@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import GridContext from './../context/GridContext';
 
 const useStyles = makeStyles((theme) => ({
+
   title: {
     textAlign: 'center',
     margin: `${theme.spacing(2)}px 0`,
@@ -12,8 +13,8 @@ const useStyles = makeStyles((theme) => ({
 
   gridContainer: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    gridTemplateRows: 'repeat(3, 1fr)',    
+    gridTemplateColumns: 'repeat(5, 1fr)',
+    gridTemplateRows: 'repeat(5, 1fr)',
     gap: theme.spacing(1),
     margin: `${theme.spacing(12)}px auto`,
     boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.5)',
@@ -54,32 +55,34 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ColorsGridComp = ({ gridData }) => {
-  const classes = useStyles();
+  const gridCells = gridData?.gridCells || [];
+  const classes = useStyles({ totalCells: gridCells ? gridCells.length : 0 });
   const { updateGrid, setCurrentGrid, fetchGridData } = useContext(GridContext);
 
-  const handleColorBlockClick = async (cellId) => {
+  const handleColorBlockClick = async (cellId) => 
+  {
     const gridSystemRequest = {
       Id: gridData.id,
-      GridCells: [gridData.gridCells.find(cell => cell.id === cellId)]
+      GridCells: [gridCells.find(cell => cell.id === cellId)]
     };
     
     await updateGrid(gridSystemRequest.Id, gridSystemRequest);
     
     const updatedGridData = await fetchGridData(gridSystemRequest.Id);
     setCurrentGrid(updatedGridData);
-  };
+  }
   
   return (
     <>
         {gridData && <p>Rutnätsnamn : {gridData.name}</p>}
         <div className={classes.gridContainer}>
-            {(!gridData || !gridData.gridCells || gridData.gridCells.length === 0) ? (
+            {(!gridData || !gridCells || gridCells.length === 0) ? (
                 <Paper className={classes.errorBox} elevation={3}>
-                    <p>Klicka på en av namnen för att få upp rutnätet, det går även att switcha rutnät emellan de.</p>
+                    <p>Klicka på en av namnen för att få upp rutnätet, det går även att byta rutnät mellan de.</p>
                 </Paper>
             ) : (
-                gridData.gridCells.map((cell) => {
-                    const gradientBackground = `linear-gradient(45deg, ${cell.colorStatus} 0%, ${cell.colorStatus} 55%, #fff 75%)`;
+                gridCells.map((cell) => {
+                    const gradientBackground = `linear-gradient(45deg, ${cell.colorstatus} 0%, ${cell.colorstatus} 55%, #fff 75%)`;
                     return (
                         <Paper 
                             key={cell.id} 
@@ -87,11 +90,11 @@ const ColorsGridComp = ({ gridData }) => {
                             elevation={3}
                             onClick={() => handleColorBlockClick(cell.id)}
                             style={{ 
-                                gridRow: cell.rowPosition,
-                                gridColumn: cell.columnPosition
+                                gridRow: cell.rowposition,
+                                gridColumn: cell.columnposition
                             }}
                         >
-                            <div className={classes.colorBlock} style={{ background: gradientBackground, borderBottomColor: cell.colorStatus }}></div>
+                            <div className={classes.colorBlock} style={{ background: gradientBackground, borderBottomColor: cell.colorstatus }}></div>
                         </Paper>
                     );
                 })

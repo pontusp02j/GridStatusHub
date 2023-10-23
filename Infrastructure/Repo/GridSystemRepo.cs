@@ -68,20 +68,25 @@ namespace GridStatusHub.Infra.Repo
             return allGridCells.Where(gc => gc.gridsystemid == gridSystemId);
         }
 
-        public async Task<int> InsertGridAndCellsAsync(GridSystem gridSystem, List<GridCell> cells)
+        public async Task<(int, List<GridCell>)> InsertGridAndCellsAsync(GridSystem gridSystem, List<GridCell> cells)
         {
             const string gridInsertQuery = "INSERT INTO gridsystems (Name, EstablishmentDate) VALUES (@Name, @EstablishmentDate) RETURNING id";
             int gridSystemId = await _connection.ExecuteScalarAsync<int>(gridInsertQuery, new { gridSystem.name, gridSystem.establishmentdate });
 
-            foreach(var cell in cells) 
+            const string cellInsertQuery = "INSERT INTO gridcells (gridsystemid, rowposition, columnposition) VALUES (@gridsystemid, @rowposition, @columnposition) RETURNING id";
+            
+            List<int> cellIds = new List<int>();
+            foreach (var cell in cells) 
             {
                 cell.gridsystemid = gridSystemId;
-                const string cellInsertQuery = "INSERT INTO gridcells (gridsystemid, rowposition, columnposition) VALUES (@gridsystemid, @rowposition, @columnposition)";
-                await _connection.ExecuteAsync(cellInsertQuery, cell);
+                int cellId = await _connection.ExecuteScalarAsync<int>(cellInsertQuery, cell);
+                cell.id = cellId;
+                cellIds.Add(cellId);
             }
 
-            return gridSystemId;
+            return (gridSystemId, cells);
         }
+
 
         public async Task<bool> SoftDeleteGridSystemByIdAsync(int id)
         {

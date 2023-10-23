@@ -16,7 +16,7 @@ namespace GridStatusHub.Presentation.Endpoints
 
         public override void Configure()
         {
-            Put("/gridsystem/Update");
+            Put("/gridsystems/Update");
             AllowAnonymous(); // TODO: Note: In a real-world scenario, secure the endpoints
         }
 

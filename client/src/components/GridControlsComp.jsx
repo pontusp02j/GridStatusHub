@@ -14,16 +14,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const GridControlsComp = ({ onCreateNew }) => {
+const GridControlsComp = ({ onCreateNew, editingGridId }) => {
   const classes = useStyles();
 
   return (
     <div className={classes.controlsContainer}>
-      <Button variant="contained" color="primary" className={classes.button} onClick={onCreateNew}>
+      <Button 
+        variant="contained" 
+        color="primary" 
+        className={classes.button} 
+        onClick={onCreateNew}
+        disabled={editingGridId !== null}
+      >
         Skapa ny
       </Button>
     </div>
   );
 };
+
 
 export default GridControlsComp;

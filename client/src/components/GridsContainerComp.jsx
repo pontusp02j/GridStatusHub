@@ -16,7 +16,7 @@ const GridContainerComp = () => {
       height: '58em',
   };
     const { createGrid, currentGrid, setCurrentGrid, grids, setActiveGridId } = useContext(GridContext); // Added grids to destructure
-
+    const [editingGridId, setEditingGridId] = useState(null);
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [gridName, setGridName] = useState('');
 
@@ -35,22 +35,24 @@ const GridContainerComp = () => {
             window.alert(error);
             return;
         }
-
+    
         const newGrid = await createGrid({ name: gridName });
-        console.log(newGrid);
+    
         if (newGrid) {
+            console.log(newGrid.gridCells)
             setCurrentGrid(newGrid);
             setActiveGridId(newGrid.id);
         }
+    
         handleDialogClose();
     };
-
+    
     return (
         <div>
             <div style={gridStyles}> 
               <ColorsGridComp gridData={currentGrid} />
             </div>
-            <GridControlsComp onCreateNew={handleCreateNew} />
+            <GridControlsComp onCreateNew={handleCreateNew} editingGridId={editingGridId} />
 
             <Dialog open={isDialogOpen} onClose={handleDialogClose}>
                 <DialogTitle>Skapa nytt rutnät</DialogTitle>
@@ -77,7 +79,11 @@ const GridContainerComp = () => {
                 </DialogActions>
             </Dialog>
 
-            <GridItemsListComp />
+            <GridItemsListComp 
+                editingGridId={editingGridId} 
+                setEditingGridId={setEditingGridId} 
+                currentGridId={currentGrid?.id}
+                />
         </div>
     );
 };

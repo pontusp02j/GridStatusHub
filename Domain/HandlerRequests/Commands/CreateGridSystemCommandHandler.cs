@@ -1,6 +1,7 @@
 using GridStatusHub.Domain.Context;
 using GridStatusHub.Domain.Entities;
 using GridStatusHub.Domain.Requests.GridSystem;
+using GridStatusHub.Domain.Responses.GridCell;
 using GridStatusHub.Domain.Responses.GridSystem;
 using GridStatusHub.Domain.Utilities;
 
@@ -45,11 +46,12 @@ namespace GridStatusHub.Domain.HandlerRequests.Command
 
             List<GridCell> cells = GenerateGridCellsLayout();
 
-            int id = await _gridSystemRepo.InsertGridAndCellsAsync(gridSystem, cells);
-            
+            (var id, var updatedCells) = await _gridSystemRepo.InsertGridAndCellsAsync(gridSystem, cells);
+
             response.Id = id;
             response.Name = gridSystem.name;
-
+            response.GridCells = updatedCells.Select(cell => ConvertPropertyService.CopyPropertiesFrom<GridCell, GridCellResponse>(cell)).ToList();    
+            
             return response;
         }
 
