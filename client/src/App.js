@@ -1,8 +1,8 @@
 import './App.css';
 import React from 'react';
 import { CssBaseline, Container, Grid } from '@material-ui/core';
-import { GridProvider } from './context/GridProvider';
-import GridContainerComp from './components/GridsContainerComp';
+import GridProvider from './context/GridProvider';
+import GridContainerComp from './components/GridContainer/index';
 
 function App() {
 

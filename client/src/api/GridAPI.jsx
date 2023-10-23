@@ -19,7 +19,7 @@ class GridAPI {
 
       if (response.status === 202 || options.method === 'DELETE') {
         if (!response.ok) {
-          return this.handleError(response, customErrorMessage);
+          return GridAPI.handleError(response, customErrorMessage);
         }
         return;
       }
@@ -27,26 +27,25 @@ class GridAPI {
       if (response.ok) {
         return await response.json();
       } else {
-        return this.handleError(response, customErrorMessage);
+        return GridAPI.handleError(response, customErrorMessage);
       }
 
     } catch (error) {
       console.error(`Error during ${options.method || 'GET'} request: ${error.message}`);
       return null;
     }
-}
-
+  }
 
   static fetchGrids() {
-    return this.request(GRID_ENDPOINT);
+    return GridAPI.request(GRID_ENDPOINT);
   }
 
   static fetchGridById(gridId) {
-    return this.request(`${GRID_ENDPOINT}/${gridId}`);
+    return GridAPI.request(`${GRID_ENDPOINT}/${gridId}`);
   }
 
   static createGrid(errorMessage, grid) {
-    return this.request(
+    return GridAPI.request(
       `${GRID_ENDPOINT}/create`,
       {
         method: 'POST',
@@ -58,7 +57,7 @@ class GridAPI {
   }
 
   static updateGrid(errorMessage, gridSystemRequest) {
-    return this.request(
+    return GridAPI.request(
       `${GRID_ENDPOINT}/Update`,
       {
         method: 'PUT',
@@ -70,7 +69,7 @@ class GridAPI {
   }
 
   static deleteGrid(gridId) {
-    return this.request(`${GRID_ENDPOINT}/delete/${gridId}`, { method: 'DELETE' });
+    return GridAPI.request(`${GRID_ENDPOINT}/delete/${gridId}`, { method: 'DELETE' });
   }
 }
 
